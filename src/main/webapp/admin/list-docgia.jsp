@@ -71,22 +71,7 @@
                                                     </button>
                                                 </td>
                                             </tr>                                        
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Trần Thị B</td>
-                                                <td>2002-08-20</td>
-                                                <td>56 Nguyễn Trãi, Q.5</td>
-                                                <td>0987654321</td>
-                                                <td>b.tran@gmail.com</td>
-                                                <td>
-                                                    <button class="btn btn-warning btn-sm btnEdit" data-bs-toggle="modal" data-bs-target="#modalEditReader">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-sm">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>                                              
+                                                                                        
                                         </tbody>
                                     </table>
                                 </div>

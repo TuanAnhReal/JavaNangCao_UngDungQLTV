@@ -6,11 +6,14 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.DocGia;
+import model.DocGiaDAO;
 
 /**
  *
@@ -18,7 +21,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "DocGiaServlet", urlPatterns = {"/docgia"})
 public class DocGiaServlet extends HttpServlet {
+    DocGiaDAO dgDAO;
 
+    @Override
+    public void init() throws ServletException {
+        dgDAO = new DocGiaDAO();
+    }
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,7 +41,25 @@ public class DocGiaServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        request.getRequestDispatcher("/admin/list-docgia.jsp").forward(request, response);    
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "list";
+        }
+        switch (action) {
+            case "list":
+                var lstDG = dgDAO.getAll();
+                request.setAttribute("listDG", lstDG);
+                request.getRequestDispatcher("/admin/list-docgia.jsp").forward(request, response);    
+                break;
+            case "search":
+                
+                break;
+            case "insert":
+                
+                break;
+            
+        }
+        
         
         
        
