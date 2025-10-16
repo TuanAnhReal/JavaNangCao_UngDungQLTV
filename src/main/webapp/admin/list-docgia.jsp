@@ -71,9 +71,9 @@
                                                         <a href="docgia?action=showEdit&maDocGia=${dg.maDocGia}" class="btn btn-warning btn-sm">
                                                             <i class="bi bi-pencil-square"></i>
                                                         </a>
-                                                        <button class="btn btn-danger btn-sm">
+                                                            <a href="docgia?action=delete&maDocGia=${dg.maDocGia}" class="btn btn-danger btn-sm">
                                                             <i class="bi bi-trash""></i>
-                                                        </button>
+                                                            </a>
                                                     </td>
 
 
@@ -178,22 +178,14 @@
 
         <%@ include file="layout/footer.jsp" %>
         <%@include file="layout/alert.jsp" %>
-
-        <!-- Chèn script show modal -->
         <c:if test="${not empty editDocGia}">
             <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    const modal = new bootstrap.Modal(document.getElementById('modalEditReader'));
-                    document.getElementById('editHoTen').value = "${editDocGia.hoTen}";
-                    document.getElementById('editNgaySinh').value = "${editDocGia.ngaySinh}";
-                    document.getElementById('editDiaChi').value = "${editDocGia.diaChi}";
-                    document.getElementById('editSoDienThoai').value = "${editDocGia.soDienThoai}";
-                    document.getElementById('editEmail').value = "${editDocGia.email}";
-                    modal.show();
-                });
+                var myModal = new bootstrap.Modal(document.getElementById('modalEditReader'), {});
+                window.onload = function () {
+                    myModal.show();
+                }
             </script>
         </c:if>
-
 
     </body>
 </html>

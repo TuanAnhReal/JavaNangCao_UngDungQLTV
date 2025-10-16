@@ -16,18 +16,16 @@ public class DocGiaDAO {
         List<DocGia> list = new ArrayList<>();
         String sql = "SELECT * FROM DocGia";
 
-        try (Connection conn = DBConnection.getConnection();
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Connection conn = DBConnection.getConnection(); Statement st = conn.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
                 DocGia dg = new DocGia(
-                    rs.getInt("maDocGia"),
-                    rs.getString("HoTen"),
-                    rs.getDate("NgaySinh"),
-                    rs.getString("DiaChi"),
-                    rs.getString("SoDienThoai"),
-                    rs.getString("Email")
+                        rs.getInt("maDocGia"),
+                        rs.getString("HoTen"),
+                        rs.getDate("NgaySinh"),
+                        rs.getString("DiaChi"),
+                        rs.getString("SoDienThoai"),
+                        rs.getString("Email")
                 );
                 list.add(dg);
             }
@@ -44,8 +42,7 @@ public class DocGiaDAO {
     public boolean insertDocGia(DocGia dg) {
         String sql = "INSERT INTO DocGia(HoTen, NgaySinh, DiaChi, SoDienThoai, Email) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, dg.getHoTen());
             ps.setDate(2, new java.sql.Date(dg.getNgaySinh().getTime()));
@@ -76,8 +73,7 @@ public class DocGiaDAO {
     public boolean updateDocGia(DocGia dg) {
         String sql = "UPDATE DocGia SET HoTen = ?, NgaySinh = ?, DiaChi = ?, SoDienThoai = ?, Email = ? WHERE maDocGia = ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, dg.getHoTen());
             ps.setDate(2, new java.sql.Date(dg.getNgaySinh().getTime()));
@@ -99,8 +95,7 @@ public class DocGiaDAO {
     public boolean deleteDocGia(int maDocGia) {
         String sql = "DELETE FROM DocGia WHERE maDocGia = ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maDocGia);
             return ps.executeUpdate() > 0;
 
@@ -116,19 +111,18 @@ public class DocGiaDAO {
         List<DocGia> list = new ArrayList<>();
         String sql = "SELECT * FROM DocGia WHERE HoTen LIKE ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, "%" + keyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     DocGia dg = new DocGia(
-                        rs.getInt("maDocGia"),
-                        rs.getString("HoTen"),
-                        rs.getDate("NgaySinh"),
-                        rs.getString("DiaChi"),
-                        rs.getString("SoDienThoai"),
-                        rs.getString("Email")
+                            rs.getInt("maDocGia"),
+                            rs.getString("HoTen"),
+                            rs.getDate("NgaySinh"),
+                            rs.getString("DiaChi"),
+                            rs.getString("SoDienThoai"),
+                            rs.getString("Email")
                     );
                     list.add(dg);
                 }
@@ -141,44 +135,30 @@ public class DocGiaDAO {
 
         return list;
     }
-    
-        public List<DocGia> searchDocGiaforID(int keyword) {
-        List<DocGia> list = new ArrayList<>();
+
+    public DocGia searchDocGiaforID(int maDocGia) {
         String sql = "SELECT * FROM DocGia WHERE MaDocGia = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, keyword);
+            ps.setInt(1, maDocGia);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    DocGia dg = new DocGia(
-                        rs.getInt("maDocGia"),
-                        rs.getString("HoTen"),
-                        rs.getDate("NgaySinh"),
-                        rs.getString("DiaChi"),
-                        rs.getString("SoDienThoai"),
-                        rs.getString("Email")
+                if (rs.next()) {
+                    return new DocGia(
+                            rs.getInt("maDocGia"),
+                            rs.getString("HoTen"),
+                            rs.getDate("NgaySinh"),
+                            rs.getString("DiaChi"),
+                            rs.getString("SoDienThoai"),
+                            rs.getString("Email")
                     );
-                    list.add(dg);
                 }
             }
-
         } catch (SQLException e) {
-            System.err.println("Lỗi khi tìm kiếm độc giả:");
+            System.err.println("Lỗi khi tìm kiếm độc giả theo ID:");
             e.printStackTrace();
         }
 
-        return list;
+        return null;
     }
-    
-    public static void main(String[] args) {
-        DocGiaDAO dao = new DocGiaDAO();
-         for(DocGia x: dao.getAll())
-         {
-             System.out.println(x);
-         }
-         
-         
-    }
+
 }
