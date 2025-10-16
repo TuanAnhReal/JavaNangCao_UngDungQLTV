@@ -1,11 +1,15 @@
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
+
     <head>
         <meta charset="UTF-8">
         <title>Trang Quản trị Thư viện</title>
         <%@ include file="layout/header.jsp" %>
     </head>
-    <body>
+    <body> 
+
         <%@ include file="layout/nav.jsp" %>
 
         <div class="container-fluid">
@@ -31,7 +35,7 @@
                                 <form class="row g-3 mb-3" action="docgia" method="post">
                                     <input type="hidden" name="action" value="search" />
                                     <div class="col-md-6">
-                                        <input type="text" name="hoten" value="" class="form-control" placeholder="Nhập tên độc giả cần tra cứu...">
+                                        <input type="text" name="hoten" value="${hoten}" class="form-control" placeholder="Nhập tên độc giả cần tra cứu...">
                                     </div>
                                     <div class="col-md-3">
                                         <button type="submit" class="btn btn-primary">
@@ -54,24 +58,27 @@
                                                 <th>Thao tác</th>
                                             </tr>
                                         </thead>
-                                        <tbody>                                         
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Nguyễn Văn A</td>
-                                                <td>2001-05-12</td>
-                                                <td>123 Trần Hưng Đạo, Q.1</td>
-                                                <td>0912345678</td>
-                                                <td>a.nguyen@gmail.com</td>
-                                                <td>
-                                                    <button class="btn btn-warning btn-sm btnEdit" data-bs-toggle="modal" data-bs-target="#modalEditReader">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-sm">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>                                        
-                                                                                        
+                                        <tbody>  
+                                            <c:forEach var="dg" items="${lstDG}">
+                                                <tr>
+                                                    <td>${dg.maDocGia}</td>
+                                                    <td>${dg.hoTen}</td>
+                                                    <td>${dg.ngaySinh}</td>
+                                                    <td>${dg.diaChi}</td>
+                                                    <td>${dg.soDienThoai}</td>
+                                                    <td>${dg.email}</td>
+                                                    <td>
+                                                        <a href="docgia?action=showEdit&maDocGia=${dg.maDocGia}" class="btn btn-warning btn-sm">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </a>
+                                                        <button class="btn btn-danger btn-sm">
+                                                            <i class="bi bi-trash""></i>
+                                                        </button>
+                                                    </td>
+
+
+                                                </tr>                                   
+                                            </c:forEach>                                           
                                         </tbody>
                                     </table>
                                 </div>
@@ -83,7 +90,7 @@
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <form action="docgia" method="post">
-                                        <input name="action" value="add" type="hidden" />
+                                        <input name="action" value="insert" type="hidden" />
                                         <div class="modal-header bg-primary text-white">
                                             <h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Thêm độc giả</h5>
                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -123,7 +130,8 @@
                         <div class="modal fade" id="modalEditReader" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
-                                    <form>
+                                    <form action="docgia" method="post">
+                                        <input name="action" value="update" type="hidden" />
                                         <div class="modal-header bg-warning text-dark">
                                             <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Sửa thông tin độc giả</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -131,27 +139,27 @@
                                         <div class="modal-body">
                                             <div class="mb-3">
                                                 <label class="form-label">Mã độc giả</label>
-                                                <input type="text" class="form-control" id="editMaDocGia" readonly>
+                                                <input type="text" class="form-control" name="MaDocGia" id="editMaDocGia" value="${editDocGia.maDocGia}" readonly>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Họ tên</label>
-                                                <input type="text" class="form-control" id="editHoTen" required>
+                                                <input type="text" class="form-control" name="HoTen" id="editHoTen" value="${editDocGia.hoTen}" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Ngày sinh</label>
-                                                <input type="date" class="form-control" id="editNgaySinh">
+                                                <input type="date" class="form-control" name="NgaySinh" id="editNgaySinh" value="${editDocGia.ngaySinh}">
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Địa chỉ</label>
-                                                <input type="text" class="form-control" id="editDiaChi">
+                                                <input type="text" class="form-control" name="DiaChi" id="editDiaChi" value="${editDocGia.diaChi}">
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Số điện thoại</label>
-                                                <input type="text" class="form-control" id="editSoDienThoai">
+                                                <input type="text" class="form-control" name="SoDienThoai" id="editSoDienThoai" value="${editDocGia.soDienThoai}">
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="editEmail">
+                                                <input type="email" class="form-control" name="Email" id="editEmail" value="${editDocGia.email}">
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -169,6 +177,23 @@
         </div>
 
         <%@ include file="layout/footer.jsp" %>
+        <%@include file="layout/alert.jsp" %>
+
+        <!-- Chèn script show modal -->
+        <c:if test="${not empty editDocGia}">
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const modal = new bootstrap.Modal(document.getElementById('modalEditReader'));
+                    document.getElementById('editHoTen').value = "${editDocGia.hoTen}";
+                    document.getElementById('editNgaySinh').value = "${editDocGia.ngaySinh}";
+                    document.getElementById('editDiaChi').value = "${editDocGia.diaChi}";
+                    document.getElementById('editSoDienThoai').value = "${editDocGia.soDienThoai}";
+                    document.getElementById('editEmail').value = "${editDocGia.email}";
+                    modal.show();
+                });
+            </script>
+        </c:if>
+
 
     </body>
 </html>

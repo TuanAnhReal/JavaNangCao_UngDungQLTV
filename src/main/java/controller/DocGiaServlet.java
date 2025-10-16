@@ -6,6 +6,8 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,13 +23,14 @@ import model.DocGiaDAO;
  */
 @WebServlet(name = "DocGiaServlet", urlPatterns = {"/docgia"})
 public class DocGiaServlet extends HttpServlet {
+
     DocGiaDAO dgDAO;
 
     @Override
     public void init() throws ServletException {
         dgDAO = new DocGiaDAO();
     }
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,7 +43,9 @@ public class DocGiaServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
         String action = request.getParameter("action");
         if (action == null) {
             action = "list";
@@ -48,21 +53,32 @@ public class DocGiaServlet extends HttpServlet {
         switch (action) {
             case "list":
                 var lstDG = dgDAO.getAll();
-                request.setAttribute("listDG", lstDG);
-                request.getRequestDispatcher("/admin/list-docgia.jsp").forward(request, response);    
+                request.setAttribute("lstDG", lstDG);
+                request.getRequestDispatcher("/admin/list-docgia.jsp").forward(request, response);
                 break;
             case "search":
-                
+                String hoten = request.getParameter("hoten");
+                var searchDG = dgDAO.searchDocGia(hoten);
+
+                request.setAttribute("lstDG", searchDG);
+                request.getRequestDispatcher("/admin/list-docgia.jsp").forward(request, response);
                 break;
             case "insert":
-                
+                xuLyThem(request, response);
                 break;
-            
+            case "showEdit":
+                int maDocGia = Integer.parseInt(request.getParameter("maDocGia"));
+                var dg = dgDAO.searchDocGiaforID(maDocGia);
+                request.setAttribute("editDocGia", dg);
+                request.setAttribute("lstDG", dgDAO.getAll());
+                request.getRequestDispatcher("docgia.jsp").forward(request, response);
+                break;
+
+            case "update":
+                xuLyCapNhat(request, response);
+                break;
         }
-        
-        
-        
-       
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -103,5 +119,50 @@ public class DocGiaServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void xuLyThem(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String hoTen = request.getParameter("HoTen");
+            String ngaysinhstr = request.getParameter("NgaySinh");
+            String diachi = request.getParameter("DiaChi");
+            String sodienthoai = request.getParameter("SoDienThoai");
+            String email = request.getParameter("Email");
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date ngaysinh = new Date(sdf.parse(ngaysinhstr).getTime());
+
+            DocGia dg = new DocGia(hoTen, ngaysinh, diachi, sodienthoai, email);
+            dgDAO.insertDocGia(dg);
+            //thông báo thành công
+            request.setAttribute("success", "Thêm thành công!");
+
+            // chuyển tiếp về action=list
+            request.getRequestDispatcher("/docgia?action=list").forward(request, response);
+        } catch (Exception e) {
+            System.out.println("Lỗi: " + e.toString());
+        }
+    }
+
+    private void xuLyCapNhat(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int maDocGia = Integer.parseInt(request.getParameter("MaDocGia"));
+            String hoTen = request.getParameter("HoTen");
+            String ngaySinhStr = request.getParameter("NgaySinh");
+            String diaChi = request.getParameter("DiaChi");
+            String soDienThoai = request.getParameter("SoDienThoai");
+            String email = request.getParameter("Email");
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date ngaySinh = new Date(sdf.parse(ngaySinhStr).getTime());
+
+            DocGia dg = new DocGia(maDocGia, hoTen, ngaySinh, diaChi, soDienThoai, email);
+            dgDAO.updateDocGia(dg);
+
+            request.getSession().setAttribute("success", "Cập nhật thành công!");
+            response.sendRedirect(request.getContextPath() + "/docgia?action=list");
+        } catch (Exception e) {
+            System.out.println("Lỗi: " + e.toString());
+        }
+    }
 
 }

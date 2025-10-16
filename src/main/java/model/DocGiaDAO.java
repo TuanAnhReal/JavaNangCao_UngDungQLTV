@@ -142,6 +142,36 @@ public class DocGiaDAO {
         return list;
     }
     
+        public List<DocGia> searchDocGiaforID(int keyword) {
+        List<DocGia> list = new ArrayList<>();
+        String sql = "SELECT * FROM DocGia WHERE MaDocGia = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, keyword);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    DocGia dg = new DocGia(
+                        rs.getInt("maDocGia"),
+                        rs.getString("HoTen"),
+                        rs.getDate("NgaySinh"),
+                        rs.getString("DiaChi"),
+                        rs.getString("SoDienThoai"),
+                        rs.getString("Email")
+                    );
+                    list.add(dg);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi tìm kiếm độc giả:");
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    
     public static void main(String[] args) {
         DocGiaDAO dao = new DocGiaDAO();
          for(DocGia x: dao.getAll())
