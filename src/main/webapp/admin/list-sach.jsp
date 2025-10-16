@@ -1,4 +1,5 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -55,14 +56,15 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Dữ liệu mẫu (test) -->
+                                        <!-- truyền lstSach -->
+                                        <c:forEach var="s" items="${lstSach}">
                                         <tr>
-                                            <td>1</td>
-                                            <td>Lập trình Java cơ bản</td>
-                                            <td>Nguyễn Văn A</td>
-                                            <td>2021</td>
-                                            <td>CNTT</td>
-                                            <td>5</td>
+                                            <td>${s.maSach}</td>
+                                            <td>${s.tenSach}</td>
+                                            <td>${s.tacGia}</td>
+                                            <td>${s.namxuatban}</td>
+                                            <td>${s.theLoai}</td>
+                                            <td>${s.soLuong}</td>
                                             <td>
                                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditBook">
                                                     <i class="bi bi-pencil-square"></i>
@@ -71,7 +73,8 @@
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </td>
-                                        </tr>                                       
+                                        </tr>  
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>

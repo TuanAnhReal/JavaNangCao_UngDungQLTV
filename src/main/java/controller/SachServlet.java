@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.SachDAO;
 
 /**
  *
@@ -19,6 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SachServlet", urlPatterns = {"/sach"})
 public class SachServlet extends HttpServlet {
 
+    SachDAO sDAO;
+
+    @Override
+    public void init() throws ServletException {
+         sDAO = new SachDAO();
+    }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,7 +41,21 @@ public class SachServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        request.getRequestDispatcher("/admin/list-sach.jsp").forward(request, response);
+        
+        String action = request.getParameter("action");
+        if(action == null){
+            action = "list";
+        }
+        switch (action) {
+            case "list":
+                var lstSach = sDAO.getAll();
+                request.setAttribute("lstSach", lstSach);
+                request.getRequestDispatcher("/admin/list-sach.jsp").forward(request, response);
+                break;
+            
+        }
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

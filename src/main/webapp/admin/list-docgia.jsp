@@ -127,7 +127,7 @@
                         </div>
 
                         <!-- Modal: Sửa độc giả -->
-                        <div class="modal fade" id="modalEditReader" tabindex="-1" aria-hidden="true">
+                        <div class="modal fade" id="modalEditForm" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <form action="docgia" method="post">
@@ -178,11 +178,13 @@
 
         <%@ include file="layout/footer.jsp" %>
         <%@include file="layout/alert.jsp" %>
-        <c:if test="${not empty editDocGia}">
+        
+        <!--  nếu servlet có attribute editDocGia thì   -->
+        <c:if test="${not empty editDocGia}"> 
             <script>
-                var myModal = new bootstrap.Modal(document.getElementById('modalEditReader'), {});
+                var editModal = new bootstrap.Modal(document.getElementById('modalEditForm'), {}); <!-- trỏ modalEditForm vào editModal -->
                 window.onload = function () {
-                    myModal.show();
+                    editModal.show();   //show ra modal khi load xong trang
                 }
             </script>
         </c:if>

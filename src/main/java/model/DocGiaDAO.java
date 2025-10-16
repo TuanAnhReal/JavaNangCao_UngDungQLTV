@@ -136,6 +136,7 @@ public class DocGiaDAO {
         return list;
     }
 
+    //  tìm độc giả theo mã
     public DocGia searchDocGiaforID(int maDocGia) {
         String sql = "SELECT * FROM DocGia WHERE MaDocGia = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -157,8 +158,20 @@ public class DocGiaDAO {
             System.err.println("Lỗi khi tìm kiếm độc giả theo ID:");
             e.printStackTrace();
         }
-
         return null;
     }
+//    tổng số độc giả 
+    public int getTotalDocGia() {
+        String sql = "SELECT COUNT(*) AS total FROM DocGia";
+        int total = 0;
 
+        try (Connection conn = DBConnection.getConnection(); Statement st = conn.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next()) {
+                total = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi" + e.toString());
+        }
+        return total;
+    }
 }

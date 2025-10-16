@@ -22,7 +22,7 @@
             <div class="card-body">
               <i class="bi bi-book fs-2 text-primary"></i>
               <h5 class="mt-2">Tổng số sách</h5>
-              <p class="fs-4 fw-bold text-primary">1,250</p>
+              <p class="fs-4 fw-bold text-primary">${tongS}</p>
             </div>
           </div>
         </div>
@@ -31,7 +31,7 @@
             <div class="card-body">
               <i class="bi bi-people fs-2 text-success"></i>
               <h5 class="mt-2">Độc giả</h5>
-              <p class="fs-4 fw-bold text-success">320</p>
+              <p class="fs-4 fw-bold text-success">${tongDG}</p>
             </div>
           </div>
         </div>

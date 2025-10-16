@@ -11,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.DocGiaDAO;
+import model.SachDAO;
 
 /**
  *
@@ -31,7 +33,17 @@ public class HomeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+                request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         
+        //lấy tổng số dg, sách
+        DocGiaDAO dgDAO = new DocGiaDAO();
+        int tongDG = dgDAO.getTotalDocGia();
+        SachDAO sDAO = new SachDAO();
+        int tongS = sDAO.getTotalSach();
+        
+        request.setAttribute("tongS", tongS);
+        request.setAttribute("tongDG", tongDG);
         request.getRequestDispatcher("/admin/dashboard.jsp").forward(request, response);
         
     }
