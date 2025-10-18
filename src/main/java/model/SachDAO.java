@@ -47,7 +47,7 @@ public class SachDAO {
     
     //thêm sách
     public boolean insertSach(Sach s) {
-        String sql = "INSERT INTO Sach (TenSach, TacGia, NamXuatBan, TheLoai, SoLuong) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Sach (TenSach, TacGia, NamXuatBan, TheLoai, SoLuong) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection(); 
                 PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -112,6 +112,7 @@ public class SachDAO {
         }
     }
 
+    //tìm các sách theo tên
     public List<Sach> searchSach(String keyword) {
         List<Sach> list = new ArrayList<>();
         String sql = "SELECT * FROM Sach WHERE TenSach LIKE ?";

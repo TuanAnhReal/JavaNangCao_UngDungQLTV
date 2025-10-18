@@ -76,6 +76,13 @@ public class DocGiaServlet extends HttpServlet {
             case "update":
                 xuLyCapNhat(request, response);
                 break;
+            case "alertDelete":
+                int maDG = Integer.parseInt(request.getParameter("maDocGia"));
+                DocGia dgDel = dgDAO.searchDocGiaforID(maDG);   // lấy ra độc giả để hiện tên trong modal
+                request.setAttribute("lstDG", dgDAO.getAll());
+                request.setAttribute("delDocGia", dgDel);
+                request.getRequestDispatcher("/admin/list-docgia.jsp").forward(request, response);
+                break;
             case "delete":
                 xuLyXoa(request, response);
                 break;
@@ -136,7 +143,7 @@ public class DocGiaServlet extends HttpServlet {
             DocGia dg = new DocGia(hoTen, ngaysinh, diachi, sodienthoai, email);
             dgDAO.insertDocGia(dg);
             //thông báo thành công
-            request.setAttribute("success", "Thêm thành công!");
+            request.setAttribute("success", "Thêm độc giả thành công!");
 
             // chuyển tiếp về action=list
             request.getRequestDispatcher("/docgia?action=list").forward(request, response);
@@ -170,16 +177,16 @@ public class DocGiaServlet extends HttpServlet {
 
     private void xuLyXoa(HttpServletRequest request, HttpServletResponse response) {
         try {
-            int maDocGia = Integer.parseInt(request.getParameter("MaDocGia"));
-            dgDAO.deleteDocGia(maDocGia);
+            int maDG_xoa = Integer.parseInt(request.getParameter("maDocGia"));
+            dgDAO.deleteDocGia(maDG_xoa);
             
             //thông báo xoá thành công
-            request.setAttribute("success", "Xoá thành công!");
+            request.setAttribute("success", "Xoá độc giả thành công!");
 
             //gọi về form độc giả
             request.getRequestDispatcher("/docgia?action=list").forward(request, response);
         } catch (Exception e) {
-            System.out.println("Lỗi: " +toString());
+            System.out.println("Lỗi: " + toString());
         }
     }
 

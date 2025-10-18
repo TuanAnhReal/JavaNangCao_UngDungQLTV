@@ -35,7 +35,7 @@
                                 <form class="row g-3 mb-3" action="docgia" method="post">
                                     <input type="hidden" name="action" value="search" />
                                     <div class="col-md-6">
-                                        <input type="text" name="hoten" value="${hoten}" class="form-control" placeholder="Nhập tên độc giả cần tra cứu...">
+                                        <input type="text" name="hoten" value="${param.hoten}" class="form-control" placeholder="Nhập tên độc giả cần tra cứu...">
                                     </div>
                                     <div class="col-md-3">
                                         <button type="submit" class="btn btn-primary">
@@ -71,9 +71,9 @@
                                                         <a href="docgia?action=showEdit&maDocGia=${dg.maDocGia}" class="btn btn-warning btn-sm">
                                                             <i class="bi bi-pencil-square"></i>
                                                         </a>
-                                                            <a href="docgia?action=delete&maDocGia=${dg.maDocGia}" class="btn btn-danger btn-sm">
+                                                        <a href="docgia?action=alertDelete&maDocGia=${dg.maDocGia}" class="btn btn-danger btn-sm">
                                                             <i class="bi bi-trash""></i>
-                                                            </a>
+                                                        </a>
                                                     </td>
 
 
@@ -176,18 +176,47 @@
             </div>
         </div>
 
+        <!-- Modal: Xác nhận xóa -->
+        <div class="modal fade" id="delAlertForm" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title"><i class="bi bi-exclamation-triangle me-2"></i> Xác nhận xóa</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn <b>xóa độc giả ${delDocGia.hoTen}</b> không?
+                    </div>
+                    <div class="modal-footer">
+                        <a href="docgia?action=delete&maDocGia=${delDocGia.maDocGia}" class="btn btn-danger">Xóa</a>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <%@ include file="layout/footer.jsp" %>
         <%@include file="layout/alert.jsp" %>
-        
-        <!--  nếu servlet có attribute editDocGia thì   -->
+
+        <!--  nếu servlet có attribute editDocGia   -->
         <c:if test="${not empty editDocGia}"> 
             <script>
-                var editModal = new bootstrap.Modal(document.getElementById('modalEditForm'), {}); <!-- trỏ modalEditForm vào editModal -->
+                var editModal = new bootstrap.Modal(document.getElementById('modalEditForm'), {});<!-- trỏ modalEditForm vào editModal -->
                 window.onload = function () {
                     editModal.show();   //show ra modal khi load xong trang
-                }
+                };
             </script>
-        </c:if>
+            </c:if>
+            <!--  nếu servlet có attribute deleteDG  -->
+            <c:if test="${not empty delDocGia}"> 
+                        <script>
+                    var deleteAlert = new bootstrap.Modal(document.getElementById('delAlertForm'), {});<!-- trỏ form delete vào deleteAlert -->
+                    window.onload = function () {
+                        deleteAlert.show();   //show ra thông báo
+                        };
+            </script>
+                    </c:if>
 
-    </body>
-</html>
+                </body>
+            </html>

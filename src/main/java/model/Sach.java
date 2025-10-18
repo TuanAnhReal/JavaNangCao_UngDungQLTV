@@ -74,6 +74,14 @@ public class Sach {
         this.anhBia = anhBia;
     }
 
+    public Sach(String tenSach, String tacGia, int namxuatban, String theLoai, int soLuong) {
+        this.tenSach = tenSach;
+        this.tacGia = tacGia;
+        this.namxuatban = namxuatban;
+        this.theLoai = theLoai;
+        this.soLuong = soLuong;
+    }
+
     public Sach(int maSach, String tenSach, String tacGia, int namxuatban, String theLoai, int soLuong, String anhBia) {
         this.maSach = maSach;
         this.tenSach = tenSach;
